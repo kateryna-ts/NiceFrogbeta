@@ -1,0 +1,9 @@
+{
+  "name": "NiceFrog - Hyper-local Marketplace",
+  "description": "The first of its kind, next generation internet mobile app that connects buyers, sellers, job seekers, and singles in their immediate physical proximity using BLE and QR technology.",
+  "requestFramePermissions": [
+    "geolocation",
+    "bluetooth",
+    "camera"
+  ]
+}

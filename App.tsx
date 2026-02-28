@@ -417,9 +417,9 @@ const App: React.FC = () => {
 
       {/* PROXIMITY CHAT MODAL */}
       <Modal isOpen={!!proximityChat} onClose={() => setProximityChat(null)} title={proximityChat?.name || 'Chat'}>
-        <div className="flex flex-col h-[500px]">
+        <div className="flex flex-col h-[500px] md:h-[600px] max-h-[80dvh]">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-xl border border-gray-100 mb-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-xl border border-gray-100 mb-4 overscroll-contain">
             {proximityChatMessages.map(msg => (
               <div key={msg.id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[75%] px-4 py-2 text-sm shadow-sm ${
@@ -442,18 +442,21 @@ const App: React.FC = () => {
               handleSendProximityMessage(input.value);
               input.value = '';
             }}
-            className="flex gap-2 items-center border-t pt-3"
+            className="flex gap-2 items-center border-t pt-3 flex-shrink-0 bg-white pb-[env(safe-area-inset-bottom,8px)]"
           >
             <input 
               name="msg"
               type="text" 
               placeholder="Say something nice..."
-              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors"
+              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors text-gray-900"
               autoFocus
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button 
               type="submit"
-              className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark transition-colors shadow-sm"
+              className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark transition-colors shadow-sm flex-shrink-0"
             >
               <ArrowRight size={16} />
             </button>

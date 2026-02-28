@@ -276,9 +276,9 @@ export const ListingDetailChat: React.FC<ListingDetailChatProps> = ({ isOpen, on
 
       {/* Chat Modal */}
       <Modal isOpen={showChat} onClose={() => setShowChat(false)} title={listing.user || 'Seller'}>
-        <div className="flex flex-col h-[500px]">
+        <div className="flex flex-col h-[500px] md:h-[600px] max-h-[80dvh]">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-xl border border-gray-100 mb-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-xl border border-gray-100 mb-4 overscroll-contain">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[75%] px-4 py-2 text-sm shadow-sm ${
@@ -294,18 +294,21 @@ export const ListingDetailChat: React.FC<ListingDetailChatProps> = ({ isOpen, on
           </div>
 
           {/* Input */}
-          <form onSubmit={sendChat} className="flex gap-2 items-center border-t pt-3">
+          <form onSubmit={sendChat} className="flex gap-2 items-center border-t pt-3 flex-shrink-0 bg-white pb-[env(safe-area-inset-bottom,8px)]">
             <input 
-              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors"
+              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors text-gray-900"
               placeholder="Type a message..."
               value={chatMsg}
               onChange={e => setChatMsg(e.target.value)}
               autoFocus
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button 
               type="submit" 
               disabled={!chatMsg.trim()} 
-              className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm flex-shrink-0"
             >
               <ArrowRight size={16} />
             </button>

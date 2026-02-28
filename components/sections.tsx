@@ -52,17 +52,17 @@ const HeroSection: React.FC<{ onSignUp: () => void }> = ({ onSignUp }) => {
     <section className="relative min-h-screen flex flex-col items-center justify-center bg-frog-dark overflow-hidden pt-20">
       {/* Animated Background Radar */}
       <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
-        <div className="w-[600px] h-[600px] border border-frog-green rounded-full animate-ping-slow"></div>
-        <div className="absolute w-[400px] h-[400px] border border-frog-green rounded-full animate-ping-slow" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute w-[200px] h-[200px] border border-frog-green rounded-full animate-ping-slow" style={{ animationDelay: '2s' }}></div>
+        <div className="w-[600px] h-[600px] border border-frog-green rounded-full animate-ping-slow" style={{ willChange: 'transform' }}></div>
+        <div className="absolute w-[400px] h-[400px] border border-frog-green rounded-full animate-ping-slow" style={{ animationDelay: '1s', willChange: 'transform' }}></div>
+        <div className="absolute w-[200px] h-[200px] border border-frog-green rounded-full animate-ping-slow" style={{ animationDelay: '2s', willChange: 'transform' }}></div>
       </div>
 
       {/* Orbiting Icons */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 animate-float text-frog-green/40"><Home size={32} /></div>
-        <div className="absolute top-1/3 right-1/4 animate-float text-frog-green/40" style={{ animationDelay: '1s' }}><Car size={32} /></div>
-        <div className="absolute bottom-1/3 left-1/3 animate-float text-frog-green/40" style={{ animationDelay: '2s' }}><Briefcase size={32} /></div>
-        <div className="absolute bottom-1/4 right-1/3 animate-float text-frog-green/40" style={{ animationDelay: '3s' }}><Heart size={32} /></div>
+        <div className="absolute top-1/4 left-1/4 animate-float text-frog-green/40" style={{ willChange: 'transform' }}><Home size={32} /></div>
+        <div className="absolute top-1/3 right-1/4 animate-float text-frog-green/40" style={{ animationDelay: '1s', willChange: 'transform' }}><Car size={32} /></div>
+        <div className="absolute bottom-1/3 left-1/3 animate-float text-frog-green/40" style={{ animationDelay: '2s', willChange: 'transform' }}><Briefcase size={32} /></div>
+        <div className="absolute bottom-1/4 right-1/3 animate-float text-frog-green/40" style={{ animationDelay: '3s', willChange: 'transform' }}><Heart size={32} /></div>
       </div>
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto mt-[-50px]">
@@ -184,7 +184,7 @@ const UseCasesSection: React.FC = () => (
         ].map((item, i) => (
           <FadeIn key={i} delay={i * 50}>
             <div className="group p-8 rounded-2xl bg-frog-bg border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full">
-              <div className="w-12 h-12 rounded-xl bg-frog-green/10 flex items-center justify-center text-frog-forest mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-xl bg-frog-green/10 flex items-center justify-center text-frog-forest mb-6 group-hover:scale-110 transition-transform" style={{ transformOrigin: 'center', willChange: 'transform' }}>
                 <item.icon size={24} />
               </div>
               <h3 className="text-xl font-bold text-frog-dark mb-3">{item.title}</h3>
@@ -431,7 +431,7 @@ export const AuthenticatedHomeFeed: React.FC<{ user: any; onNavigate: any; onSel
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="p-6 hover:border-frog-green cursor-pointer group transition-all" onClick={() => onNavigate('MARKETPLACE')}>
-          <div className="w-12 h-12 rounded-xl bg-frog-green/10 flex items-center justify-center text-frog-forest mb-4 group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-xl bg-frog-green/10 flex items-center justify-center text-frog-forest mb-4 group-hover:scale-110 transition-transform" style={{ transformOrigin: 'center', willChange: 'transform' }}>
             <ShoppingBag size={24} />
           </div>
           <h3 className="font-bold text-lg mb-1 group-hover:text-frog-green transition-colors">Marketplace</h3>
@@ -439,7 +439,7 @@ export const AuthenticatedHomeFeed: React.FC<{ user: any; onNavigate: any; onSel
         </Card>
         
         <Card className="p-6 hover:border-frog-green cursor-pointer group transition-all" onClick={() => onNavigate('DATING')}>
-          <div className="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500 mb-4 group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center text-pink-500 mb-4 group-hover:scale-110 transition-transform" style={{ transformOrigin: 'center', willChange: 'transform' }}>
             <Heart size={24} />
           </div>
           <h3 className="font-bold text-lg mb-1 group-hover:text-pink-500 transition-colors">Dating</h3>
@@ -447,7 +447,7 @@ export const AuthenticatedHomeFeed: React.FC<{ user: any; onNavigate: any; onSel
         </Card>
         
         <Card className="p-6 hover:border-frog-green cursor-pointer group transition-all" onClick={onSell}>
-          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-4 group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-4 group-hover:scale-110 transition-transform" style={{ transformOrigin: 'center', willChange: 'transform' }}>
             <Plus size={24} />
           </div>
           <h3 className="font-bold text-lg mb-1 group-hover:text-blue-500 transition-colors">Sell Item</h3>
@@ -455,7 +455,7 @@ export const AuthenticatedHomeFeed: React.FC<{ user: any; onNavigate: any; onSel
         </Card>
 
         <Card className="p-6 hover:border-frog-green cursor-pointer group transition-all" onClick={onSetupAlerts}>
-          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 mb-4 group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 mb-4 group-hover:scale-110 transition-transform" style={{ transformOrigin: 'center', willChange: 'transform' }}>
             <Bell size={24} />
           </div>
           <h3 className="font-bold text-lg mb-1 group-hover:text-orange-500 transition-colors">Alerts</h3>
@@ -617,6 +617,7 @@ export const DatingView: React.FC<{ phoneConfig?: PhoneConfig }> = ({ phoneConfi
         <button 
           onClick={() => setProfileIndex((profileIndex + 1) % PROFILES.length)} 
           className="w-16 h-16 rounded-full border-2 border-red-100 bg-white flex items-center justify-center shadow-lg hover:shadow-xl hover:border-red-400 hover:scale-110 transition-all group"
+          style={{ transformOrigin: 'center', willChange: 'transform' }}
         >
           <X className="text-red-400 group-hover:text-red-500" size={32} />
         </button>
@@ -625,12 +626,13 @@ export const DatingView: React.FC<{ phoneConfig?: PhoneConfig }> = ({ phoneConfi
         <button 
           onClick={() => setShowChatModal(true)} 
           className="w-20 h-20 rounded-full bg-gradient-to-br from-frog-green to-frog-greenDark flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 transition-all group"
+          style={{ transformOrigin: 'center', willChange: 'transform' }}
         >
-          <MessageCircle className="text-white group-hover:scale-110 transition-transform" size={36} />
+          <MessageCircle className="text-white group-hover:scale-110 transition-transform" size={36} style={{ transformOrigin: 'center', willChange: 'transform' }} />
         </button>
         
         {/* Super Like */}
-        <button className="w-16 h-16 rounded-full border-2 border-yellow-100 bg-white flex items-center justify-center shadow-lg hover:shadow-xl hover:border-yellow-400 hover:scale-110 transition-all group">
+        <button className="w-16 h-16 rounded-full border-2 border-yellow-100 bg-white flex items-center justify-center shadow-lg hover:shadow-xl hover:border-yellow-400 hover:scale-110 transition-all group" style={{ transformOrigin: 'center', willChange: 'transform' }}>
           <Star className="text-yellow-400 group-hover:text-yellow-500" size={32} />
         </button>
       </div>
@@ -638,9 +640,9 @@ export const DatingView: React.FC<{ phoneConfig?: PhoneConfig }> = ({ phoneConfi
 
       {/* Chat Modal */}
       <Modal isOpen={showChatModal} onClose={() => setShowChatModal(false)} title={currentProfile.name}>
-        <div className="flex flex-col h-[500px]">
+        <div className="flex flex-col h-[500px] md:h-[600px] max-h-[80dvh]">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-xl border border-gray-100 mb-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white rounded-xl border border-gray-100 mb-4 overscroll-contain">
             {chatMessages.map(msg => (
               <div key={msg.id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[75%] px-4 py-2 text-sm shadow-sm ${
@@ -658,20 +660,23 @@ export const DatingView: React.FC<{ phoneConfig?: PhoneConfig }> = ({ phoneConfi
           {/* Input */}
           <form 
             onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
-            className="flex gap-2 items-center border-t pt-3"
+            className="flex gap-2 items-center border-t pt-3 flex-shrink-0 bg-white pb-[env(safe-area-inset-bottom,8px)]"
           >
             <input 
               type="text" 
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Say something nice..."
-              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors"
+              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors text-gray-900"
               autoFocus
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
             />
             <button 
               type="submit"
               disabled={!newMessage.trim()}
-              className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm flex-shrink-0"
             >
               <ArrowRight size={16} />
             </button>

@@ -1,5 +1,124 @@
 @import "tailwindcss";
 
+/* ===== CRITICAL MOBILE FIXES ===== */
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  height: -webkit-fill-available;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  position: fixed;
+  width: 100%;
+}
+
+#root {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Fix for ALL input fields on mobile — they MUST be visible when keyboard opens */
+input, textarea, select {
+  font-size: 16px !important; /* Prevents iOS zoom on focus */
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  color: inherit;
+  background-color: inherit;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  /* Ensure caret and text are always visible */
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827 !important;
+  opacity: 1 !important;
+}
+
+/* Fix glassmorphism on mobile — backdrop-filter kills GPU on older phones */
+@media (max-width: 768px) {
+  .glass-panel, .glass-nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255,255,255,0.97) !important;
+  }
+}
+
+/* Fix bottom nav safe area for notched phones */
+.bottom-nav, nav[class*="bottom"], div[class*="bottom-nav"] {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: constant(safe-area-inset-bottom, 0px);
+}
+
+/* Prevent layout shift when keyboard appears */
+.main-content, [class*="overflow-y-auto"], [class*="overflow-auto"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Fix SVG and image scaling on mobile */
+svg {
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix transform/translate issues causing blurry graphics */
+@media (max-width: 768px) {
+  [class*="translate"], [class*="transform"] {
+    will-change: auto;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* Fix for chat input containers specifically */
+[class*="chat"], [class*="message"], [class*="input-container"] {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure text input placeholders and typed text are always visible */
+input::placeholder, textarea::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* Fix overflow clipping that hides typed text */
+input[type="text"], input[type="search"], input[type="tel"], input[type="email"], textarea {
+  overflow: visible;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+
+textarea {
+  white-space: pre-wrap;
+  resize: none;
+}
+
 @theme {
   --color-frog-green: #22c55e;
   --color-frog-greenDark: #16a34a; /* Added for compatibility/gradients */

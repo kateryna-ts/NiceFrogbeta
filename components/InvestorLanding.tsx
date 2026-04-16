@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { 
   Smartphone, Shield, Zap, Lock, Users, Globe, 
   TrendingUp, Activity, Target, ArrowRight, ChevronRight, EyeOff,
-  Heart, Utensils, ShoppingBag, MapPin
+  Heart, Utensils, ShoppingBag, MapPin, Menu, X
 } from 'lucide-react';
 import { Button, Card } from './ui';
 
@@ -72,19 +72,30 @@ export const InvestorLanding: React.FC<{ onViewDemo: () => void }> = ({ onViewDe
             <span className={`tracking-tight transition-colors ${!isScrolled ? 'text-white' : 'text-frog-forest'}`}>nicefrog</span>
           </div>
 
-          <div className="hidden lg:flex items-center gap-8">
-            {['Problem', 'Solution', 'AI', 'Traction', 'Market', '$NFT', 'Invest'].map((item) => (
-              <button 
-                key={item}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className={`text-sm font-medium transition-colors hover:text-frog-green ${!isScrolled ? 'text-white/80' : 'text-gray-600'}`}
-              >
-                {item}
-              </button>
-            ))}
+          <div className="flex flex-1 items-center justify-end overflow-hidden ml-4 lg:ml-8">
+            <div className="flex items-center gap-4 lg:gap-8 overflow-x-auto whitespace-nowrap pr-4 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+              {[
+                { label: 'Problem', id: 'problem' },
+                { label: 'Solution', id: 'solution' },
+                { label: 'AI', id: 'ai' },
+                { label: 'Traction', id: 'traction' },
+                { label: 'Use Cases', id: 'market' },
+                { label: '$NFT', id: '$nft' },
+                { label: 'Privacy', id: 'privacy' },
+                { label: 'Invest', id: 'invest' }
+              ].map((item) => (
+                <button 
+                  key={item.label}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-sm font-medium transition-colors hover:text-frog-green shrink-0 ${!isScrolled ? 'text-white/80' : 'text-gray-600'}`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
             <a 
               href="mailto:katykiev@me.com?subject=NiceFrog%20Pitch%20Deck%20Request&body=Hi%2C%20I%20would%20like%20to%20request%20the%20NiceFrog%20pitch%20deck"
-              className="inline-flex items-center justify-center rounded-full font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-frog-green disabled:opacity-50 disabled:pointer-events-none ring-offset-white bg-frog-green text-white hover:bg-[#1eb053] shadow-lg shadow-frog-green/20 border-0 h-11 px-6 text-base"
+              className="inline-flex shrink-0 items-center justify-center rounded-full font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-frog-green disabled:opacity-50 disabled:pointer-events-none ring-offset-white bg-frog-green text-white hover:bg-[#1eb053] shadow-lg shadow-frog-green/20 border-0 h-11 px-4 lg:px-6 text-sm lg:text-base whitespace-nowrap ml-2"
             >
               Request Deck
             </a>

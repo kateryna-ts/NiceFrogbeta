@@ -9,6 +9,7 @@ import { Button, Modal, Badge } from './components/ui';
 import { PostListingWizard, ListingDetailChat } from './components/modals';
 import { useProximityEngine, AlertPreferencesModal, NotificationToast, NotificationBell, AlertPreference } from './components/proximity';
 import { usePhoneConfig, ConnectPhoneModal } from './components/sms';
+import { InvestorLanding } from './components/InvestorLanding';
 import { Listing, BLEDevice, User, ListingType } from './types';
 import { MOCK_LISTINGS } from './constants';
 
@@ -29,7 +30,7 @@ const App: React.FC = () => {
   const [authInitialTab, setAuthInitialTab] = useState<'LOGIN' | 'SIGNUP'>('LOGIN');
 
   // Navigation State
-  const [view, setView] = useState<'HOME' | 'MARKETPLACE' | 'DATING' | 'TOKENS' | 'STICKERS' | 'PROFILE'>('HOME');
+  const [view, setView] = useState<'HOME' | 'MARKETPLACE' | 'DATING' | 'TOKENS' | 'STICKERS' | 'PROFILE' | 'INVESTORS'>('INVESTORS');
   
   // Modal States
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -173,8 +174,8 @@ const App: React.FC = () => {
       {/* --- NAVBAR --- */}
       <nav 
         className={`fixed w-full z-50 transition-all duration-300 h-[80px] flex items-center border-b ${
-          isScrolled 
-            ? 'bg-white/80 backdrop-blur-md border-gray-100' 
+          isScrolled || (!user && view === 'HOME')
+            ? 'bg-white/90 backdrop-blur-md border-gray-100 shadow-sm' 
             : 'bg-transparent border-transparent'
         }`}
       >
@@ -182,27 +183,36 @@ const App: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center gap-2 font-bold text-xl cursor-pointer group" onClick={() => setView('HOME')}>
             <span className="text-3xl group-hover:scale-110 transition-transform">🐸</span>
-            <span className={`tracking-tight transition-colors ${!user && !isScrolled ? 'text-white' : 'text-frog-forest'}`}>nicefrog</span>
+            <span className={`tracking-tight transition-colors ${!user && !isScrolled && view !== 'HOME' ? 'text-white' : 'text-frog-forest'}`}>nicefrog</span>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             {!user ? (
               <>
-                {['Product', 'Use Cases', 'Privacy', 'Investors'].map((item) => (
+                {['Product', 'Use Cases', 'Privacy'].map((item) => (
                   <button 
                     key={item}
-                    onClick={() => scrollToSection(item.toLowerCase().replace(' ', '-'))}
-                    className={`text-sm font-medium transition-colors hover:text-frog-green ${!isScrolled ? 'text-white/80' : 'text-gray-600'}`}
+                    onClick={() => {
+                      setView('HOME');
+                      setTimeout(() => scrollToSection(item.toLowerCase().replace(' ', '-')), 100);
+                    }}
+                    className={`text-sm font-medium transition-colors hover:text-frog-green ${!isScrolled && view !== 'HOME' ? 'text-white/80' : 'text-gray-600'}`}
                   >
                     {item}
                   </button>
                 ))}
+                <button 
+                  onClick={() => setView('INVESTORS')}
+                  className={`text-sm font-medium transition-colors hover:text-frog-green ${view === 'INVESTORS' ? 'text-frog-green' : (!isScrolled && view !== 'HOME' ? 'text-white/80' : 'text-gray-600')}`}
+                >
+                  Investors
+                </button>
                 <Button 
                   onClick={() => openAuth('SIGNUP')} 
                   className="bg-frog-green text-white hover:bg-[#1eb053] shadow-lg shadow-frog-green/20 border-0 rounded-full px-6"
                 >
-                  Get Early Access
+                  Get App
                 </Button>
               </>
             ) : (
@@ -256,7 +266,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button className={`lg:hidden p-2 ${!user && !isScrolled ? 'text-white' : 'text-frog-dark'}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button className={`lg:hidden p-2 ${!user && !isScrolled && view !== 'HOME' ? 'text-white' : 'text-frog-dark'}`} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -266,17 +276,30 @@ const App: React.FC = () => {
            <div className="lg:hidden absolute top-[80px] left-0 w-full bg-white border-b border-gray-100 py-4 animate-fade-in-up h-[calc(100vh-80px)] overflow-y-auto">
               {!user ? (
                  <div className="flex flex-col p-6 gap-4">
-                    {['Product', 'Use Cases', 'Privacy', 'Investors'].map((item) => (
+                    {['Product', 'Use Cases', 'Privacy'].map((item) => (
                       <button 
                         key={item}
-                        onClick={() => scrollToSection(item.toLowerCase().replace(' ', '-'))}
+                        onClick={() => {
+                          setView('HOME');
+                          setMobileMenuOpen(false);
+                          setTimeout(() => scrollToSection(item.toLowerCase().replace(' ', '-')), 100);
+                        }}
                         className="text-lg font-medium text-left py-2 text-gray-800"
                       >
                         {item}
                       </button>
                     ))}
+                    <button 
+                      onClick={() => {
+                        setView('INVESTORS');
+                        setMobileMenuOpen(false);
+                      }}
+                      className="text-lg font-medium text-left py-2 text-gray-800"
+                    >
+                      Investors
+                    </button>
                     <div className="h-px bg-gray-100 my-2"></div>
-                    <Button className="w-full justify-center h-12" onClick={() => openAuth('SIGNUP')}>Get Early Access</Button>
+                    <Button className="w-full justify-center h-12" onClick={() => openAuth('SIGNUP')}>Get App</Button>
                     <Button variant="ghost" className="w-full justify-center h-12" onClick={() => openAuth('LOGIN')}>Log In</Button>
                  </div>
               ) : (
@@ -301,6 +324,7 @@ const App: React.FC = () => {
 
       {/* --- CONTENT --- */}
       <main>
+        {view === 'INVESTORS' && <InvestorLanding onViewDemo={() => setView('HOME')} />}
         {view === 'HOME' && (
           !user ? (
             <PublicLandingPage 

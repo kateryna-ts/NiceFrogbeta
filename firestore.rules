@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+       return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+       return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function uidUnchanged() {
+       return !('uid' in request.resource.data) ||
+         request.resource.data.uid == request.auth.uid;
+    }
+    
+    function uidNotModified() {
+       return !('uid' in request.resource.data) ||
+         request.resource.data.uid == resource.data.uid;
+    }
+    
+    function hasRequiredFields(fields) {
+       return request.resource.data.keys().hasAll(fields);
+    }
+    
+    function isValidEmail(email) {
+       return email is string &&
+         email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidInvestorLead(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.email is string && isValidEmail(data.email) &&
+             (!('company' in data) || (data.company is string && data.company.size() < 100)) &&
+             data.status in ['pending', 'approved', 'rejected'] &&
+             data.createdAt is timestamp;
+    }
+
+    match /investor_leads/{leadId} {
+      allow read: if isAuthenticated() && resource.data.uid == request.auth.uid;
+      allow create: if isAuthenticated() && 
+                       isValidInvestorLead(request.resource.data) && 
+                       uidUnchanged() && 
+                       request.resource.data.status == 'pending';
+      allow update: if isAuthenticated() && 
+                       resource.data.uid == request.auth.uid && 
+                       isValidInvestorLead(request.resource.data) && 
+                       uidNotModified() &&
+                       request.resource.data.createdAt == resource.data.createdAt &&
+                       request.resource.data.status == resource.data.status;
+    }
+  }
+}

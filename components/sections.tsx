@@ -49,7 +49,7 @@ const FadeIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ child
 // --- HERO SECTION ---
 const HeroSection: React.FC<{ onSignUp: () => void }> = ({ onSignUp }) => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-frog-dark overflow-hidden pt-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center bg-[#f9fafb] overflow-hidden pt-20">
       {/* Animated Background Radar */}
       <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
         <div className="w-[600px] h-[600px] border border-frog-green rounded-full animate-ping-slow" style={{ willChange: 'transform' }}></div>
@@ -59,41 +59,41 @@ const HeroSection: React.FC<{ onSignUp: () => void }> = ({ onSignUp }) => {
 
       {/* Orbiting Icons */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 animate-float text-frog-green/40" style={{ willChange: 'transform' }}><Home size={32} /></div>
-        <div className="absolute top-1/3 right-1/4 animate-float text-frog-green/40" style={{ animationDelay: '1s', willChange: 'transform' }}><Car size={32} /></div>
-        <div className="absolute bottom-1/3 left-1/3 animate-float text-frog-green/40" style={{ animationDelay: '2s', willChange: 'transform' }}><Briefcase size={32} /></div>
-        <div className="absolute bottom-1/4 right-1/3 animate-float text-frog-green/40" style={{ animationDelay: '3s', willChange: 'transform' }}><Heart size={32} /></div>
+        <div className="absolute top-1/4 left-1/4 animate-float text-frog-green/60" style={{ willChange: 'transform' }}><Home size={32} /></div>
+        <div className="absolute top-1/3 right-1/4 animate-float text-frog-green/60" style={{ animationDelay: '1s', willChange: 'transform' }}><Car size={32} /></div>
+        <div className="absolute bottom-1/3 left-1/3 animate-float text-frog-green/60" style={{ animationDelay: '2s', willChange: 'transform' }}><Briefcase size={32} /></div>
+        <div className="absolute bottom-1/4 right-1/3 animate-float text-frog-green/60" style={{ animationDelay: '3s', willChange: 'transform' }}><Heart size={32} /></div>
       </div>
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto mt-[-50px]">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-frog-green/10 border border-frog-green/20 text-frog-green text-sm font-bold uppercase tracking-widest mb-8 animate-fade-in-up">
-          <span className="w-2 h-2 rounded-full bg-frog-green animate-pulse"></span>
-          Now in Beta - Real-Time BLE Marketplace
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-frog-green text-white text-sm font-bold uppercase tracking-widest mb-8 animate-fade-in-up shadow-lg shadow-frog-green/20">
+          <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+          LIVE DEMO
         </div>
         
-        <h1 className="text-6xl md:text-8xl font-extrabold text-white tracking-tight mb-8 leading-[1.1] animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+        <h1 className="text-6xl md:text-8xl font-extrabold text-[#111827] tracking-tight mb-8 leading-[1.1] animate-fade-in-up" style={{ animationDelay: '100ms' }}>
           Your World.<br />
           Right Here.<br />
-          <span className="text-frog-green">Right Now.</span>
+          <span className="text-[#22c55e]">Right Now.</span>
         </h1>
         
-        <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+        <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-fade-in-up" style={{ animationDelay: '200ms' }}>
           NiceFrog connects you to the people, places, and deals within 100 meters — without tracking you globally.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up" style={{ animationDelay: '300ms' }}>
-          <Button size="lg" onClick={onSignUp} className="min-w-[200px] text-lg h-16">
+          <Button size="lg" onClick={onSignUp} className="min-w-[200px] text-lg h-16 bg-[#22c55e] hover:bg-[#1eb053] text-white shadow-xl shadow-frog-green/20 border-0">
             Get Early Access
           </Button>
-          <Button size="lg" variant="outline" className="min-w-[200px] text-lg h-16 border-white/20 text-white hover:bg-white/10">
+          <Button size="lg" variant="outline" className="min-w-[200px] text-lg h-16 border-gray-300 text-gray-700 hover:bg-gray-50">
             See How It Works
           </Button>
         </div>
       </div>
 
       {/* Live Ticker */}
-      <div className="absolute bottom-0 w-full bg-black/20 backdrop-blur-sm border-t border-white/5 py-3 overflow-hidden">
-        <div className="whitespace-nowrap animate-marquee flex gap-12 items-center text-sm font-medium text-frog-green">
+      <div className="absolute bottom-0 w-full bg-[#dcfce7] border-t border-frog-green/20 py-3 overflow-hidden">
+        <div className="whitespace-nowrap animate-marquee flex gap-12 items-center text-sm font-bold text-frog-forest">
           <span>🛋️ Sarah listed a 2BR apartment 43m away</span>
           <span>🚗 Mike is selling a Tesla Model 3 12m away</span>
           <span>☕ Cafe Lux posted a 'Free Coffee' alert 85m away</span>
@@ -169,7 +169,7 @@ const HowItWorksSection: React.FC = () => (
 
 // --- USE CASES ---
 const UseCasesSection: React.FC = () => (
-  <section className="py-32 bg-white" id="use-cases">
+  <section className="py-32 bg-[#f0fdf4]" id="use-cases">
     <div className="container mx-auto px-6 max-w-7xl">
       <SectionHeader title="One Platform. Every Corner of Your City." subtitle="WHERE NICEFROG LEAPS" />
       

@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "InvestorLead": {
+      "title": "InvestorLead",
+      "description": "A lead or inquiry from a prospective investor.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user ID of the investor." },
+        "name": { "type": "string", "description": "The name of the investor." },
+        "email": { "type": "string", "description": "The email of the investor." },
+        "company": { "type": "string", "description": "The firm or company name." },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "timestamp" }
+      },
+      "required": ["uid", "name", "email", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/investor_leads/{leadId}": {
+      "schema": { "$ref": "#/entities/InvestorLead" },
+      "description": "Stores investor inquiries and access requests."
+    }
+  }
+}

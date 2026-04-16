@@ -56,6 +56,19 @@ const App: React.FC = () => {
   const [proximityChatMessages, setProximityChatMessages] = useState<{id: number, sender: string, text: string, time: string}[]>([]);
   const proximityMessagesEndRef = useRef<HTMLDivElement>(null);
 
+  const [kbdOffset, setKbdOffset] = useState(0);
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      if (!vv) return;
+      const offset = window.innerHeight - vv.height;
+      setKbdOffset(offset > 0 ? offset : 0);
+    };
+    vv.addEventListener('resize', update);
+    return () => vv.removeEventListener('resize', update);
+  }, []);
+
   // Scroll to bottom for proximity chat
   useEffect(() => {
     proximityMessagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -466,13 +479,14 @@ const App: React.FC = () => {
               handleSendProximityMessage(input.value);
               input.value = '';
             }}
-            className="flex gap-2 items-center border-t pt-3 flex-shrink-0 bg-white pb-[env(safe-area-inset-bottom,8px)]"
+            style={{ position: 'fixed', bottom: `calc(env(safe-area-inset-bottom, 8px) + ${kbdOffset}px)`, left: 0, right: 0 }}
+            className="flex gap-2 items-center border-t px-4 py-3 flex-shrink-0 bg-white z-50 touch-manipulation"
           >
             <input 
               name="msg"
               type="text" 
               placeholder="Say something nice..."
-              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors text-gray-900"
+              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-base focus:outline-none focus:border-frog-green transition-colors text-gray-900"
               autoFocus
               autoComplete="off"
               autoCorrect="off"
@@ -480,6 +494,7 @@ const App: React.FC = () => {
             />
             <button 
               type="submit"
+              style={{ touchAction: 'manipulation' }}
               className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark transition-colors shadow-sm flex-shrink-0"
             >
               <ArrowRight size={16} />

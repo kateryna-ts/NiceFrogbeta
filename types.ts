@@ -65,25 +65,28 @@ export interface TokenStat {
 // --- USER & AUTH TYPES ---
 
 export interface UserPreferences {
-  intents: string[]; // 'BUY_SELL', 'REAL_ESTATE', 'JOBS', 'DATING', 'BROWSING'
+  intents?: string[]; // 'BUY_SELL', 'REAL_ESTATE', 'JOBS', 'DATING', 'BROWSING'
   
   // Marketplace
-  marketplaceCategories: string[];
-  priceRange: [number, number];
-  maxDistance: number; // Changed to number for slider
+  marketplaceCategories?: string[];
+  priceRange?: [number, number];
+  maxDistance?: number; // Changed to number for slider
+  conditionPreference?: string[];
 
   // Dating
-  datingLookingFor: string; // 'MEN', 'WOMEN', 'EVERYONE'
-  datingAgeRange: [number, number];
-  datingDistance: number; // Changed to number for slider
-  relationshipType: string[];
-  datingInterests: string[];
+  datingLookingFor?: string; // 'MEN', 'WOMEN', 'EVERYONE'
+  datingAgeRange?: [number, number];
+  datingDistance?: number; // Changed to number for slider
+  relationshipType?: string[];
+  datingInterests?: string[];
+  zodiacSign?: string;
+  lifestyle?: string[];
   
   // Jobs
-  jobIndustries: string[];
-  jobType: string[];
-  salaryRange: [number, number];
-  remotePreference: string;
+  jobIndustries?: string[];
+  jobType?: string[];
+  salaryRange?: [number, number];
+  remotePreference?: string;
 
   // Privacy & Config
   privacy: 'EVERYONE' | 'CONNECTIONS' | 'NOBODY';

@@ -192,6 +192,19 @@ export const ListingDetailChat: React.FC<ListingDetailChatProps> = ({ isOpen, on
   const [messages, setMessages] = useState<{sender: string, text: string}[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const [kbdOffset, setKbdOffset] = useState(0);
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      if (!vv) return;
+      const offset = window.innerHeight - vv.height;
+      setKbdOffset(offset > 0 ? offset : 0);
+    };
+    vv.addEventListener('resize', update);
+    return () => vv.removeEventListener('resize', update);
+  }, []);
+
   // Reset chat when modal opens/closes
   useEffect(() => {
     if (isOpen) {
@@ -294,9 +307,13 @@ export const ListingDetailChat: React.FC<ListingDetailChatProps> = ({ isOpen, on
           </div>
 
           {/* Input */}
-          <form onSubmit={sendChat} className="flex gap-2 items-center border-t pt-3 flex-shrink-0 bg-white pb-[env(safe-area-inset-bottom,8px)]">
+          <form 
+            onSubmit={sendChat} 
+            style={{ position: 'fixed', bottom: `calc(env(safe-area-inset-bottom, 8px) + ${kbdOffset}px)`, left: 0, right: 0 }}
+            className="flex gap-2 items-center border-t px-4 py-3 flex-shrink-0 bg-white z-50 touch-manipulation"
+          >
             <input 
-              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-frog-green transition-colors text-gray-900"
+              className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-base focus:outline-none focus:border-frog-green transition-colors text-gray-900"
               placeholder="Type a message..."
               value={chatMsg}
               onChange={e => setChatMsg(e.target.value)}
@@ -308,6 +325,7 @@ export const ListingDetailChat: React.FC<ListingDetailChatProps> = ({ isOpen, on
             <button 
               type="submit" 
               disabled={!chatMsg.trim()} 
+              style={{ touchAction: 'manipulation' }}
               className="w-9 h-9 rounded-full bg-frog-green text-white flex items-center justify-center hover:bg-frog-greenDark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm flex-shrink-0"
             >
               <ArrowRight size={16} />

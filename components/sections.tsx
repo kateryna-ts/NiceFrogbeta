@@ -49,7 +49,7 @@ const FadeIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ child
 // --- HERO SECTION ---
 const HeroSection: React.FC<{ onSignUp: () => void }> = ({ onSignUp }) => {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-[#f9fafb] overflow-hidden pt-20">
+    <section className="relative min-h-screen flex flex-col items-center justify-center bg-[#f9fafb] overflow-x-hidden pt-20">
       {/* Animated Background Radar */}
       <div className="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
         <div className="w-[600px] h-[600px] border border-frog-green rounded-full animate-ping-slow" style={{ willChange: 'transform' }}></div>
@@ -138,7 +138,7 @@ const EmpathySection: React.FC = () => (
 
 // --- HOW IT WORKS ---
 const HowItWorksSection: React.FC = () => (
-  <section className="py-32 bg-frog-dark relative overflow-hidden" id="how-it-works">
+  <section className="py-32 bg-frog-dark relative overflow-x-hidden" id="how-it-works">
     <div className="container mx-auto px-6 max-w-7xl relative z-10">
       <SectionHeader title="Three Steps. One Hundred Meters. Infinite Possibilities." subtitle="SEAMLESS FLOW" dark />
       

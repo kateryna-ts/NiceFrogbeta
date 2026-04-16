@@ -93,7 +93,7 @@ export const InvestorLanding: React.FC<{ onViewDemo: () => void }> = ({ onViewDe
       </nav>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative min-h-screen flex items-center justify-center bg-[#0a1f12] overflow-hidden pt-20">
+      <section className="relative min-h-screen flex items-center justify-center bg-[#0a1f12] overflow-x-hidden pt-20">
         {/* Animated Background Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-frog-green/20 rounded-full blur-[120px] opacity-60 animate-pulse"></div>
         
@@ -457,7 +457,7 @@ export const InvestorLanding: React.FC<{ onViewDemo: () => void }> = ({ onViewDe
       <section id="invest" className="py-32 bg-white">
         <div className="container mx-auto px-6 max-w-5xl">
           <FadeIn>
-            <div className="bg-[#0a1f12] rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
+            <div className="bg-[#0a1f12] rounded-[3rem] p-12 md:p-24 text-center relative overflow-x-hidden shadow-2xl">
               {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-frog-green/20 rounded-full blur-[80px]"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-frog-forest/40 rounded-full blur-[80px]"></div>

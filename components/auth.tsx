@@ -138,8 +138,8 @@ export const AuthScreen: React.FC<{
       coverPhoto: authMode === 'LOGIN' ? 'https://picsum.photos/800/300' : '',
       stats: { listings: 0, connections: 0, reviews: 0 },
       preferences: {
-        intents: [], marketplaceCategories: [], priceRange: [0, 1000], maxDistance: 100,
-        datingLookingFor: 'EVERYONE', datingAgeRange: [18, 50], datingDistance: 50, relationshipType: [], datingInterests: [],
+        intents: [], marketplaceCategories: [], priceRange: [0, 1000], maxDistance: 100, conditionPreference: [],
+        datingLookingFor: 'EVERYONE', datingAgeRange: [18, 50], datingDistance: 50, relationshipType: [], datingInterests: [], zodiacSign: '', lifestyle: [],
         jobIndustries: [], jobType: [], salaryRange: [0, 0], remotePreference: 'HYBRID',
         privacy: 'EVERYONE', showLocation: true, allowDiscovery: true, showOnlineStatus: true, ephemeralMode: false, bleVisibility: true, fontSize: 'NORMAL',
         notifications: { messages: true, listings: true, matches: true, priceDrops: true }
@@ -180,7 +180,7 @@ export const AuthScreen: React.FC<{
 
   return (
     <div className={`
-       flex items-center justify-center p-4 transition-colors duration-500 relative overflow-hidden
+       flex items-center justify-center p-4 transition-colors duration-500 relative overflow-x-hidden
        ${isModal ? 'fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm h-screen' : 'min-h-screen bg-gray-50 dark:bg-black'}
     `}>
       {/* Background Blobs (Only if not modal, or make them simpler) */}
@@ -219,16 +219,19 @@ export const AuthScreen: React.FC<{
       )}
 
       {/* MAIN CARD */}
-      <div className={`
-        relative w-full max-w-[420px] 
-        bg-white dark:bg-[#111111] 
-        border border-gray-100 dark:border-[#2a2a2a] 
-        shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_64px_rgba(0,0,0,0.5)]
-        rounded-3xl p-8 md:p-10
-        transition-all duration-300
-        animate-in zoom-in-95 fade-in duration-200
-        ${isModal ? 'shadow-2xl' : ''}
-      `}>
+      <div 
+        className={`
+          relative w-full max-w-[420px] max-h-[90vh] overflow-y-auto 
+          bg-white dark:bg-[#111111] 
+          border border-gray-100 dark:border-[#2a2a2a] 
+          shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_24px_64px_rgba(0,0,0,0.5)]
+          rounded-3xl p-8 md:p-10
+          transition-all duration-300
+          animate-in zoom-in-95 fade-in duration-200
+          ${isModal ? 'shadow-2xl' : ''}
+        `}
+        style={{ WebkitOverflowScrolling: 'touch' }}
+      >
         {onClose && (
            <button onClick={onClose} className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-all">
               <X size={20} />
@@ -490,9 +493,15 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
   };
 
   const handleNext = () => {
-    if (step === 1 && (!data.username || !data.location)) return alert("Required fields missing.");
-    if (step === 5) onComplete({...data, onboardingComplete: true});
-    else setStep(step + 1);
+    if (step === 1 && (!data.username || !data.location)) {
+       console.warn("Required fields missing.");
+       return;
+    }
+    if (step === 5) {
+       onComplete({...data, onboardingComplete: true});
+    } else {
+       setStep(step + 1);
+    }
   };
 
   const handleBack = () => setStep(step - 1);
@@ -555,11 +564,12 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
                     key={item.id}
                     icon={item.icon} 
                     title={item.title} 
-                    selected={data.preferences.intents.includes(item.id)} 
+                    selected={(data.preferences.intents || []).includes(item.id)} 
                     onClick={() => {
-                      const intents = data.preferences.intents.includes(item.id) 
-                        ? data.preferences.intents.filter(i => i !== item.id)
-                        : [...data.preferences.intents, item.id];
+                      const prefs = data.preferences.intents || [];
+                      const intents = prefs.includes(item.id) 
+                        ? prefs.filter((i: string) => i !== item.id)
+                        : [...prefs, item.id];
                       updatePref('intents', intents);
                     }} 
                   />
@@ -576,11 +586,12 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
                <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Categories</label>
                <div className="flex flex-wrap gap-3 justify-center">
                  {['Electronics', 'Furniture', 'Clothing', 'Vehicles', 'Music', 'Sports', 'Books', 'Art', 'Home', 'Jewelry', 'Pets'].map(c => (
-                   <Chip key={c} label={c} selected={data.preferences.marketplaceCategories.includes(c)} 
+                   <Chip key={c} label={c} selected={(data.preferences.marketplaceCategories || []).includes(c)} 
                      onClick={() => {
-                       const cats = data.preferences.marketplaceCategories.includes(c)
-                        ? data.preferences.marketplaceCategories.filter(x => x !== c)
-                        : [...data.preferences.marketplaceCategories, c];
+                       const prefs = data.preferences.marketplaceCategories || [];
+                       const cats = prefs.includes(c)
+                        ? prefs.filter((x: string) => x !== c)
+                        : [...prefs, c];
                        updatePref('marketplaceCategories', cats);
                      }} 
                    />
@@ -595,6 +606,18 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
                   value={data.preferences.maxDistance} 
                   onChange={(val) => updatePref('maxDistance', val)} 
                 />
+             </div>
+             <div className="mb-6">
+                <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Condition</label>
+                <div className="flex gap-3 justify-center">
+                   {['New', 'Like New', 'Used'].map((cond: string) => (
+                     <Chip key={cond} label={cond} selected={(data.preferences.conditionPreference || []).includes(cond)} onClick={() => {
+                        const prefs = data.preferences.conditionPreference || [];
+                        const newPrefs = prefs.includes(cond) ? prefs.filter(x => x !== cond) : [...prefs, cond];
+                        updatePref('conditionPreference', newPrefs);
+                     }} />
+                   ))}
+                </div>
              </div>
            </div>
         )}
@@ -611,16 +634,54 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
                    ))}
                 </div>
              </div>
+             <div className="mb-8">
+                <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Relationship Type</label>
+                <div className="flex flex-wrap gap-3 justify-center">
+                   {['Long Term', 'Short Term', 'Casual', 'Friends'].map(o => (
+                     <Chip key={o} label={o} selected={(data.preferences.relationshipType || []).includes(o)} onClick={() => {
+                         const rels = data.preferences.relationshipType || [];
+                         const newRels = rels.includes(o) ? rels.filter(x => x !== o) : [...rels, o];
+                         updatePref('relationshipType', newRels);
+                     }} />
+                   ))}
+                </div>
+             </div>
              <div>
                 <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Passions</label>
                 <div className="flex flex-wrap gap-2 justify-center">
                    {['Music', 'Sports', 'Art', 'Cooking', 'Travel', 'Fitness', 'Gaming', 'Outdoors', 'Foodie', 'Tech'].map(i => (
-                     <Chip key={i} label={i} selected={data.preferences.datingInterests.includes(i)} 
+                     <Chip key={i} label={i} selected={(data.preferences.datingInterests || []).includes(i)} 
                        onClick={() => {
-                         const ints = data.preferences.datingInterests.includes(i)
-                           ? data.preferences.datingInterests.filter(x => x !== i)
-                           : [...data.preferences.datingInterests, i];
+                         const prefs = data.preferences.datingInterests || [];
+                         const ints = prefs.includes(i)
+                           ? prefs.filter((x: string) => x !== i)
+                           : [...prefs, i];
                          updatePref('datingInterests', ints);
+                       }} 
+                     />
+                   ))}
+                </div>
+             </div>
+             <div className="mb-8 mt-8">
+                <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Astrology Sign</label>
+                <select 
+                  className="w-full h-[52px] bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-[#333] rounded-xl px-4 text-sm dark:text-white outline-none focus:border-frog-green"
+                  value={data.preferences.zodiacSign || ''}
+                  onChange={(e) => updatePref('zodiacSign', e.target.value)}
+                >
+                  <option value="">Prefer not to say</option>
+                  {['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'].map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+             </div>
+             <div className="mb-8">
+                <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Lifestyle Habits</label>
+                <div className="flex flex-wrap gap-2 justify-center">
+                   {['Social Drinker', 'Non-drinker', 'Smoker', 'Non-smoker', '420 Friendly'].map(i => (
+                     <Chip key={i} label={i} selected={(data.preferences.lifestyle || []).includes(i)} 
+                       onClick={() => {
+                         const ls = data.preferences.lifestyle || [];
+                         const newLs = ls.includes(i) ? ls.filter(x => x !== i) : [...ls, i];
+                         updatePref('lifestyle', newLs);
                        }} 
                      />
                    ))}
@@ -637,11 +698,12 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
                  <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Industries</label>
                  <div className="flex flex-wrap gap-2 justify-center">
                    {['Tech', 'Healthcare', 'Hospitality', 'Retail', 'Finance', 'Creative', 'Legal', 'Marketing'].map(ind => (
-                      <Chip key={ind} label={ind} selected={data.preferences.jobIndustries.includes(ind)}
+                      <Chip key={ind} label={ind} selected={(data.preferences.jobIndustries || []).includes(ind)}
                         onClick={() => {
-                           const inds = data.preferences.jobIndustries.includes(ind)
-                             ? data.preferences.jobIndustries.filter(x => x !== ind)
-                             : [...data.preferences.jobIndustries, ind];
+                           const prefs = data.preferences.jobIndustries || [];
+                           const inds = prefs.includes(ind)
+                             ? prefs.filter((x: string) => x !== ind)
+                             : [...prefs, ind];
                            updatePref('jobIndustries', inds);
                         }}
                       />
@@ -652,11 +714,12 @@ export const OnboardingWizard: React.FC<{ user: UserType, onComplete: (u: UserTy
                  <label className="block text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wider mb-3 ml-1">Job Type</label>
                  <div className="flex flex-wrap gap-2 justify-center">
                     {['Full-time', 'Part-time', 'Freelance', 'Remote'].map(t => (
-                      <Chip key={t} label={t} selected={data.preferences.jobType.includes(t)}
+                      <Chip key={t} label={t} selected={(data.preferences.jobType || []).includes(t)}
                          onClick={() => {
-                           const types = data.preferences.jobType.includes(t)
-                             ? data.preferences.jobType.filter(x => x !== t)
-                             : [...data.preferences.jobType, t];
+                           const prefs = data.preferences.jobType || [];
+                           const types = prefs.includes(t)
+                             ? prefs.filter((x: string) => x !== t)
+                             : [...prefs, t];
                            updatePref('jobType', types);
                          }}
                       />
@@ -694,9 +757,9 @@ export const ProfilePage: React.FC<{ user: UserType, onEdit: () => void, phoneCo
   
   // Settings Toggles State
   const [settings, setSettings] = useState({
-    visible: user.preferences.showLocation,
-    datingMode: user.preferences.intents.includes('DATING'),
-    notifications: user.preferences.notifications.messages
+    visible: user.preferences?.showLocation ?? true,
+    datingMode: (user.preferences?.intents || []).includes('DATING'),
+    notifications: user.preferences?.notifications?.messages ?? true
   });
 
   const toggleSetting = (key: keyof typeof settings) => {
@@ -971,7 +1034,8 @@ export const SettingsModal: React.FC<{
 
   const handleToggle = (key: keyof UserPreferences, subKey?: keyof UserPreferences['notifications']) => {
     if (subKey && key === 'notifications') {
-      setPrefs({ ...prefs, notifications: { ...prefs.notifications, [subKey]: !prefs.notifications[subKey] } });
+      const currentNotifications = prefs.notifications || { messages: true, listings: true, matches: true, priceDrops: true };
+      setPrefs({ ...prefs, notifications: { ...currentNotifications, [subKey]: !currentNotifications[subKey] } });
     } else {
        // @ts-ignore
       setPrefs({ ...prefs, [key]: !prefs[key] });
@@ -1037,7 +1101,7 @@ export const SettingsModal: React.FC<{
                          <p className="text-xs text-gray-500">{item.desc}</p>
                       </div>
                       {/* @ts-ignore */}
-                      <Switch checked={prefs.notifications[item.key]} onChange={() => handleToggle('notifications', item.key)} />
+                      <Switch checked={prefs.notifications?.[item.key] ?? true} onChange={() => handleToggle('notifications', item.key)} />
                    </div>
                 ))}
              </div>
